@@ -33,11 +33,19 @@ export default {
                 if (x.indexOf('missed value!!') > -1) {
                     // ignore warnings
                 } else {
-                    util.warning('WARNING IN : ' + path.relative(util.currentDir, path.join(opath.dir, opath.base)) + '\n' + x);
+                    if (!opath) {
+                        util.warning(x);
+                    } else {
+                        util.warning('WARNING IN : ' + path.relative(util.currentDir, path.join(opath.dir, opath.base)) + '\n' + x);
+                    }
                 }
             },
             error (x) {
-                util.error('ERROR IN : ' + path.relative(util.currentDir, path.join(opath.dir, opath.base)) + '\n' + x);
+                if (!opath) {
+                    util.error(x);
+                } else {
+                    util.error('ERROR IN : ' + path.relative(util.currentDir, path.join(opath.dir, opath.base)) + '\n' + x);
+                }
             }
         }});
     },
@@ -365,7 +373,7 @@ export default {
                 }
             });
             if (Object.keys(props).length) {
-                rst.script.code =rst.script.code.replace(/[\s\r\n]components\s*=[\s\r\n]*/, (match, item, index) => {
+                rst.script.code = rst.script.code.replace(/[\s\r\n]components\s*=[\s\r\n]*/, (match, item, index) => {
                     return `$repeat = ${JSON.stringify($repeat)};\r\n$props = ${JSON.stringify(props)};\r\n$events = ${JSON.stringify(events)};\r\n${match}`;
                 });
             }
@@ -463,6 +471,14 @@ export default {
                     } else {
                         requires.push(path.join(opath.dir, wpy.template.components[k]));
                     }
+                    
+                    // 去重
+                    // Example:
+                    // components = {
+                    //     Count1: '../components/count',
+                    //     Count2: '../components/count'
+                    // };
+                    requires = util.unique(requires)
                 }
             }
             try {

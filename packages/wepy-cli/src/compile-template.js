@@ -117,7 +117,7 @@ export default {
                 if (ignores[w] || this.isInQuote(matchs, n)) {
                     return match;
                 } else {
-                    if (mapping.items && mapping.items[w]) {
+                    if (mapping.items && mapping.items[w] && mapping.items[w].bind) {
                         // prefix 减少一层
                         let upper = prefix.split(PREFIX);
                         upper.pop();
@@ -515,9 +515,9 @@ export default {
         }
 
         compiler(content, config.compilers[lang] || {}).then(content => {
-            let node = cWpy.createParser().parseFromString(content);
-            node = this.compileXML(node, template);
             let opath = path.parse(template.src);
+            let node = cWpy.createParser(opath).parseFromString(content);
+            node = this.compileXML(node, template);
             opath.npm = template.npm;
             let target = util.getDistPath(opath, config.output === 'ant' ? 'axml' : 'wxml', src, dist);
 

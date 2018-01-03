@@ -48,7 +48,7 @@ export default {
         // styles can be an empty array
         styles.forEach((style) => {
             let lang = style.type || 'css';
-            const content = style.code;
+            let content = style.code;
             const scoped = style.scoped;
             let filepath = style.src ? style.src : path.join(opath.dir, opath.base);
 
@@ -61,6 +61,12 @@ export default {
                 
                 if (lang === 'sass') { // sass is using indented syntax
                     indentedSyntax = true;
+                    // fix indent for sass, https://github.com/wepyjs/wepy/issues/663
+                    let indent = util.getIndent(content);
+                    if (indent.firstLineIndent) {
+                        content = util.fixIndent(content, indent.firstLineIndent * -1, indent.char);
+                    }
+                    console.log(content);
                 }
                 if (options.indentedSyntax === undefined) {
                     options.indentedSyntax = indentedSyntax;
@@ -96,15 +102,18 @@ export default {
         Promise.all(allPromises).then((rets) => {
             let allContent = rets.join('');
             if (requires && requires.length) {
+                let requirePath = {};
                 requires.forEach((r) => {
                     let comsrc = null;
                     isNPM = false;
-                    if (path.isAbsolute(r)) {
-                        if (path.extname(r) === '' && util.isFile(r + ext)) {
-                            comsrc = r + ext;
+                    let lib = resolve.resolveAlias(r, opath);
+  
+                    if (path.isAbsolute(lib)) {
+                        if (path.extname(lib) === '' && util.isFile(lib + ext)) {
+                            comsrc = lib + ext;
                         }
                     } else {
-                        let lib = resolve.resolveAlias(r);
+                        // let lib = resolve.resolveAlias(r, opath);
                         if (path.isAbsolute(lib)) {
                             comsrc = lib;
                         } else {
@@ -139,7 +148,9 @@ export default {
                                 relative = relative.replace(/\.wpy$/, '.' + outputExt);
                             }
                             relative = relative.replace(ext, '.' + outputExt).replace(/\\/ig, '/').replace('../', './');
-                            allContent = '@import "' + relative + '";\n' + allContent;
+                            if (!requirePath[relative])
+                                allContent = '@import "' + relative + '";\n' + allContent;
+                            requirePath[relative] = 1;
                         }
                     }
                 });

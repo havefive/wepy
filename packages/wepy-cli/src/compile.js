@@ -50,7 +50,7 @@ export default {
                 reg = new RegExp('\\' + ext + '$');
                 if (!reg.test(importpath))
                     importpath = importpath + ext;
-                let resolved = resolve.resolveAlias(importpath);
+                let resolved = resolve.resolveAlias(importpath, opath);
                 let compath;
                 if (path.isAbsolute(resolved)) {
                     compath = path.resolve(resolved);
@@ -122,9 +122,7 @@ export default {
         let wepyrc = util.getConfig();
         let src = config.source || wepyrc.src || 'src';
         let dist = config.output || wepyrc.output || 'dist';
-        chokidar.watch(`.${path.sep}${src}`, {
-            depth: 99
-        }).on('all', (evt, filepath) => {
+        chokidar.watch(`.${path.sep}${src}`, wepyrc.watchOption || {}).on('all', (evt, filepath) => {
             if ((evt === 'change' || evt === 'add') && watchReady && !preventDup[filepath]) {
                 preventDup[filepath] = evt;
                 config.file = path.join('..', filepath);
@@ -168,6 +166,7 @@ export default {
             util.error('没有检测到wepy.config.js文件, 请执行`wepy new demo`创建');
             return false;
         }
+
         resolve.init(wepyrc.resolve || {});
         loader.attach(resolve);
 
@@ -204,10 +203,16 @@ export default {
 
 
         if (config.output === 'web') {
-            wepyrc.web = wepyrc.web || {};
-            wepyrc.web.dist = wepyrc.web.dist || 'web';
-            wepyrc.web.src = wepyrc.web.src || 'src';
+            wepyrc.build = wepyrc.build || {};
+            wepyrc.build.web = wepyrc.build.web || {};
+            wepyrc.build.web.dist = wepyrc.build.web.dist || 'web';
+            wepyrc.build.web.src = wepyrc.build.web.src || 'src';
+            if (wepyrc.build.web.resolve)
+                wepyrc.resolve = Object.assign({}, wepyrc.resolve, wepyrc.build.web.resolve);
             wepyrc.output = 'web';
+
+            resolve.init(wepyrc.resolve || {});
+            loader.attach(resolve);
 
             if (!resolve.getPkg('wepy-web')) {
                 util.log('正在尝试安装缺失资源 wepy-web，请稍等。', '信息');
@@ -221,10 +226,16 @@ export default {
                 return false;
             }
         } else if (config.output === 'ant') {
-            wepyrc.ant = wepyrc.ant || {};
-            wepyrc.ant.dist = wepyrc.ant.dist || 'ant';
-            wepyrc.ant.src = wepyrc.ant.src || 'src';
+            wepyrc.build = wepyrc.build || {};
+            wepyrc.build.ant = wepyrc.build.ant || {};
+            wepyrc.build.ant.dist = wepyrc.build.ant.dist || 'ant';
+            wepyrc.build.ant.src = wepyrc.build.ant.src || 'src';
+            if (wepyrc.build.ant.resolve)
+                wepyrc.resolve = Object.assign({}, wepyrc.resolve, wepyrc.build.ant.resolve);
             wepyrc.output = 'ant';
+
+            resolve.init(wepyrc.resolve || {});
+            loader.attach(resolve);
 
             if (!resolve.getPkg('wepy-ant')) {
                 util.log('正在尝试安装缺失资源 wepy-ant，请稍等。', '信息');
@@ -238,6 +249,7 @@ export default {
                 return false;
             }
         }
+
         return true;
     },
 
@@ -370,6 +382,9 @@ export default {
             case '.js':
                 cScript.compile('babel', null, 'js', opath);
                 break;
+            case '.ts':
+                cScript.compile('typescript', null, 'ts', opath);
+                break;    
             default:
                 util.output('拷贝', path.join(opath.dir, opath.base));
 

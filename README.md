@@ -1,9 +1,9 @@
 ## WePY
 
 [![npm version](https://badge.fury.io/js/wepy.svg)](https://badge.fury.io/js/wepy)
-[![travis-ci](https://travis-ci.org/wepyjs/wepy.svg?branch=master)](https://travis-ci.org/wepyjs/wepy)
-[![Coverage Status](https://coveralls.io/repos/github/wepyjs/wepy/badge.svg?branch=master)](https://coveralls.io/github/wepyjs/wepy?branch=master)
-[![Dependency Status](https://david-dm.org/wepyjs/wepy.svg)](https://david-dm.org/wepyjs/wepy)
+[![travis-ci](https://travis-ci.org/Tencent/wepy.svg?branch=master)](https://travis-ci.org/Tencent/wepy)
+[![Coverage Status](https://coveralls.io/repos/github/Tencent/wepy/badge.svg?branch=master)](https://coveralls.io/github/Tencent/wepy?branch=master)
+[![Dependency Status](https://david-dm.org/Tencent/wepy.svg)](https://david-dm.org/Tencent/wepy)
 
 ### 介绍
 
@@ -99,27 +99,42 @@ wepy build --watch
 
 ### 哪些小程序是用 WePY 开发的
 
-阅邻二手书、
-[深大的树洞](https://github.com/jas0ncn/szushudong)、
 手机充值+、
-爱羽客羽毛球、
-小小羽球、
-七弦琴大数据、
-七弦琴小助手、
-培恩医学、
-公务员朝夕刷题、
-独角兽公司、
+手机余额查询、
+手机流量充值优惠、
+[友福图书馆](https://library.ufutx.com)[（开源）](https://github.com/glore/library)、
+[素洁商城](https://github.com/dyq086/wxYuHanStore)[（开源）](https://github.com/dyq086/wxYuHanStore)、
+[NewsLite](https://github.com/yshkk/shanbay-mina)[（开源）](https://github.com/yshkk/shanbay-mina)、
+[西安找拼车](https://github.com/chenqingspring)[（开源）](https://github.com/chenqingspring)、
+[深大的树洞](https://github.com/jas0ncn/szushudong)[（开源）](https://github.com/jas0ncn/szushudong)、
+[求知微阅读](https://github.com/KingJeason/wepy-books)[（开源）](https://github.com/KingJeason/wepy-books)、
+[给你的 iPhone X 换个发型](https://bangs.baran.wang/)、
+[天天跟我买](http://www.xiaohongchun.com.cn/index)、
+[坚橙](https://zhanart.com/wepy.html)、
+群脱单、
+米淘联盟、
+帮助圈、
+众安保险福利、
+阅邻二手书、
+趣店招聘、
+育儿柚道、
+满熊阅读、
+平行进口报价内参、
+GitHub掘金版、
+班级群管、
+鲜花说小店、
 逛人备忘、
 英语助手君、
-农资优选、
 花花百科、
+独角兽公司、
+爱羽客羽毛球、
 斑马小店、
-鲜花说小店、
-[趣店招聘](http://7xrhcw.com1.z0.glb.clouddn.com/wechat_default_300.jpg)、
-[满🐻阅读](http://7xrhcw.com1.z0.glb.clouddn.com/wechat_default_344.jpg) + 代码简例[wepy-demo-bookmall](https://github.com/Thunf/wepy-demo-bookmall)、
-[平行进口报价内参](https://miniapp.ourauto.club/qrcode.jpg)、
-[求知微阅读(完全开源)](https://github.com/KingJeason/wepy-books)、
-[坚橙](https://zhanart.com/wepy.html)
+小小羽球、
+培恩医学、
+农资优选、
+公务员朝夕刷题、
+七弦琴小助手、
+七弦琴大数据、
 ...
 
 ### 交流群
@@ -131,11 +146,11 @@ wepy build --watch
 
 ### Links
 
-[Documentation](https://wepyjs.github.io/wepy/)
+[Documentation](https://tencent.github.io/wepy/)
 
-[Changelog](https://wepyjs.github.io/wepy/#/CHANGELOG)
+[Changelog](https://tencent.github.io/wepy/document.html#/changelog)
 
-[Contributing](https://github.com/wepyjs/wepy/blob/master/CONTRIBUTING.md)
+[Contributing](https://github.com/tencent/wepy/blob/master/CONTRIBUTING.md)
 
-[License MIT](https://github.com/wepyjs/wepy/blob/master/LICENSE)
+[License MIT](https://github.com/tencent/wepy/blob/master/LICENSE)
 

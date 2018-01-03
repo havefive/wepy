@@ -256,7 +256,12 @@ export default class {
             let noPrefix = t.replace(reg, '');
             this.$data[noPrefix] = util.$copy(k[t], true);
         }
-        return this.$wxpage.setData(k);
+
+        // In the same page redirection, $wxpage does not update, so use the page $wxpage
+        if (typeof v === 'function') {
+            return this.$root.$wxpage.setData(k, v);
+        }
+        return this.$root.$wxpage.setData(k);
     }
 
     getWxPage () {
@@ -554,10 +559,46 @@ export default class {
                 }
             }
             if (Object.keys(readyToSet).length) {
-                this.setData(readyToSet);
+                this.setData(readyToSet, () => {
+                    if (this.$$nextTick) {
+                        let $$nextTick = this.$$nextTick;
+                        this.$$nextTick = null;
+                        if ($$nextTick.promise) {
+                            $$nextTick();
+                        } else {
+                            $$nextTick.call(this);
+                        }
+                    }
+                });
+            } else {
+                if (this.$$nextTick) {
+                    let $$nextTick = this.$$nextTick;
+                    this.$$nextTick = null;
+                    if ($$nextTick.promise) {
+                        $$nextTick();
+                    } else {
+                        $$nextTick.call(this);
+                    }
+                }
             }
             this.$$phase = (this.$$phase === '$apply') ? '$digest' : false;
         }
+    }
+    /**
+     * setData callback
+     * @param  {Function} callback function, if fn is undefined, then return a promise
+     * @return {Promsie}  if fn is undefined, then return a promise, otherwise return undefiend
+     */
+    $nextTick (fn) {
+        if (typeof fn === 'undefined') {
+            return new Promise((resolve, reject) => {
+                this.$$nextTick = function () {
+                    resolve();
+                };
+                this.$$nextTick.promise = true;
+            });
+        }
+        this.$$nextTick = fn;
     }
 
 }
