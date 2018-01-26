@@ -69,6 +69,7 @@ export class App extends wepy.app {
         this.intercept('request', {
             config (p) {
                 p.timestamp = +new Date();
+                return p;
             },
             success (obj) {
                 console.log('request success');
@@ -231,7 +232,7 @@ this.$nextTick().then(function () {
 
     ```javascript
     // page1.js
-    this.$preload('userName': 'Gcaufy');
+    this.$preload('userName', 'Gcaufy');
     this.$redirect('./page2');
 
     // page2.js

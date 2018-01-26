@@ -117,8 +117,8 @@ wepy build --watch
 众安保险福利、
 阅邻二手书、
 趣店招聘、
+[满熊阅读（开源：](https://github.com/Thunf/wepy-demo-bookmall) [微信小程序](https://github.com/Thunf/wepy-demo-bookmall)、[支付宝小程序）](https://github.com/Thunf/wepy-demo-bookmall/tree/alipay)、
 育儿柚道、
-满熊阅读、
 平行进口报价内参、
 GitHub掘金版、
 班级群管、
@@ -135,6 +135,7 @@ GitHub掘金版、
 公务员朝夕刷题、
 七弦琴小助手、
 七弦琴大数据、
+爽到家小程序、
 ...
 
 ### 交流群

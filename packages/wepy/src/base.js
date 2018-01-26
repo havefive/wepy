@@ -11,8 +11,8 @@
 import event from './event';
 import util from './util';
 
-const PAGE_EVENT = ['onLoad', 'onReady', 'onShow', 'onHide', 'onUnload', 'onPullDownRefresh', 'onReachBottom', 'onShareAppMessage'];
-const APP_EVENT = ['onLaunch', 'onShow', 'onHide', 'onError'];
+let PAGE_EVENT = ['onLoad', 'onReady', 'onShow', 'onHide', 'onUnload', 'onPullDownRefresh', 'onReachBottom', 'onShareAppMessage', 'onPageScroll', 'onTabItemTap'];
+let APP_EVENT = ['onLaunch', 'onShow', 'onHide', 'onError'];
 
 
 let $bindEvt = (config, com, prefix) => {
@@ -97,6 +97,7 @@ export default {
         if (!this.$instance) {
             app.$init(this, appConfig);
             this.$instance = app;
+            this.$appConfig = appConfig;
         }
 
         // This is for test case
@@ -106,9 +107,13 @@ export default {
 
         app.$wxapp = getApp();
 
+        APP_EVENT = APP_EVENT.concat(appConfig.appEvents || []);
+        PAGE_EVENT = PAGE_EVENT.concat(appConfig.pageEvents || []);
+
         APP_EVENT.forEach((v) => {
             config[v] = (...args) => {
                 let rst;
+                !app.$wxapp && (app.$wxapp = getApp());
                 app[v] && (rst = app[v].apply(app, args));
                 return rst;
             };
